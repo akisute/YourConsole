@@ -15,8 +15,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello_world"
             android:id="@+id/textView"
-            android:textSize="@dimen/console_default_font_size" />
+            android:textSize="@dimen/console_default_font_size"
+            android:bufferType="editable"
+            android:text="@string/lorem_ipsum"/>
     </ScrollView>
 </GridLayout>
