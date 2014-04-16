@@ -1,5 +1,7 @@
 package com.akisute.yourconsole.model;
 
+import com.akisute.yourconsole.intent.Intents;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

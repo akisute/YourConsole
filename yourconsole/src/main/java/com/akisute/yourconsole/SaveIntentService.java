@@ -5,31 +5,27 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.activeandroid.ActiveAndroid;
+import com.akisute.yourconsole.intent.Intents;
 import com.akisute.yourconsole.model.LogcatLine;
-import com.akisute.yourconsole.model.StringLine;
-
+import com.akisute.yourconsole.model.MText;
 
 public class SaveIntentService extends IntentService {
-    private static final String ACTION_SAVE = "com.akisute.yourconsole.action.SAVE";
-    private static final String MIME_TYPE_PLAINTEXT = "text/plain";
-    private static final String MIME_TYPE_LOGCAT = "application/vnd.com.akisute.yourconsole.logcat";
+
 
     public static void startActionSave(Context context, String text) {
         Intent intent = new Intent(context, SaveIntentService.class);
-        intent.setAction(ACTION_SAVE);
-        intent.setType(MIME_TYPE_PLAINTEXT);
+        intent.setAction(Intents.ACTION_SAVE);
+        intent.setType(Intents.MIME_TYPE_PLAINTEXT);
+        intent.putExtra(Intents.EXTRA_PACKAGE_NAME, context.getPackageName());
         intent.putExtra(Intent.EXTRA_TEXT, text);
         context.startService(intent);
     }
 
-    public static void startActionSave(Context context, StringLine stringLine) {
-        startActionSave(context, stringLine.getText());
-    }
-
     public static void startActionSave(Context context, LogcatLine logcatLine) {
         Intent intent = new Intent(context, SaveIntentService.class);
-        intent.setAction(ACTION_SAVE);
-        intent.setType(MIME_TYPE_LOGCAT);
+        intent.setAction(Intents.ACTION_SAVE);
+        intent.setType(Intents.MIME_TYPE_LOGCAT);
+        intent.putExtra(Intents.EXTRA_PACKAGE_NAME, context.getPackageName());
         intent.putExtra(Intent.EXTRA_TEXT, logcatLine.getOriginalLine());
         context.startService(intent);
     }
@@ -42,36 +38,23 @@ public class SaveIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION_SAVE.equals(action)) {
+            if (Intents.ACTION_SAVE.equals(action)) {
                 final String mimeType = intent.getType();
+                final String senderPackageName = intent.getStringExtra(Intents.EXTRA_PACKAGE_NAME);
                 final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-                handleSave(mimeType, text);
+                handleSave(senderPackageName, mimeType, text);
             }
         }
     }
 
-    private void handleSave(String mimeType, String text) {
-        if (text == null) {
-            return;
-        }
-
+    private void handleSave(String senderPackageName, String mimeType, String text) {
         try {
             ActiveAndroid.beginTransaction();
-            String[] lines = text.split("\n");
-            if (mimeType == null || MIME_TYPE_PLAINTEXT.equals(mimeType)) {
-                // plain text lines
-                for (String line : lines) {
-                    StringLine stringLine = StringLine.newStringLine(line);
-                    stringLine.save();
-                }
-            } else {
-                // logcat lines
-                for (String line : lines) {
-                    LogcatLine logcatLine = LogcatLine.newLogLine(line, true);
-                    logcatLine.save();
-                }
+            MText model = MText.newInstance(senderPackageName, mimeType, text);
+            if (model != null) {
+                model.save();
+                ActiveAndroid.setTransactionSuccessful();
             }
-            ActiveAndroid.setTransactionSuccessful();
         } finally {
             ActiveAndroid.endTransaction();
         }

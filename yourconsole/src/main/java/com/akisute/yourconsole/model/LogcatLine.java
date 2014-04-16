@@ -3,18 +3,12 @@ package com.akisute.yourconsole.model;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 import com.akisute.yourconsole.helper.LogcatHelper;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Table(name = "LogcatLine")
-public class LogcatLine extends Model {
+public class LogcatLine {
 
     public static final String LOGCAT_DATE_FORMAT = "MM-dd HH:mm:ss.SSS";
 
@@ -34,19 +28,12 @@ public class LogcatLine extends Model {
                     "\\): "
     );
 
-    @Column
     private int mLogLevel;
-    @Column
     private String mTag;
-    @Column
     private String mLogOutput;
-    @Column
     private int mProcessId = -1;
-    @Column
     private String mTimestamp;
-    @Column
     private boolean mExpanded = false;
-    @Column
     private boolean mHighlighted = false;
 
     public int getLogLevel() {
@@ -139,10 +126,6 @@ public class LogcatLine extends Model {
         }
 
         return logcatLine;
-    }
-
-    public static List<LogcatLine> getAll() {
-        return new Select().from(LogcatLine.class).orderBy("Id ASC").execute();
     }
 
     public static int convertCharToLogLevel(char logLevelChar) {

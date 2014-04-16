@@ -2,7 +2,6 @@ package com.akisute.yourconsole;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,11 +10,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.akisute.yourconsole.model.ConsoleBuffer;
-import com.akisute.yourconsole.model.ConsoleBufferLogcatLoader;
-import com.akisute.yourconsole.model.StringLine;
-
-import java.io.IOException;
-import java.util.List;
+import com.akisute.yourconsole.model.ConsoleBufferLoader;
 
 public class ConsoleViewerActivity extends Activity {
 
@@ -26,6 +21,7 @@ public class ConsoleViewerActivity extends Activity {
 
     private ViewHolder mViewHolder;
     private ConsoleBuffer mConsoleBuffer;
+    private ConsoleBufferLoader mConsoleBufferLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +29,7 @@ public class ConsoleViewerActivity extends Activity {
         setContentView(R.layout.activity_console_viewer);
 
         mConsoleBuffer = new ConsoleBuffer();
+        mConsoleBufferLoader = new ConsoleBufferLoader(mConsoleBuffer);
 
         mViewHolder = new ViewHolder();
         mViewHolder.scrollView = (ScrollView) findViewById(R.id.scrollView);
@@ -40,19 +37,25 @@ public class ConsoleViewerActivity extends Activity {
         mViewHolder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mConsoleBuffer.addStringLine("God Fuck");
+                SaveIntentService.startActionSave(view.getContext(), "Hello, SaveIntentService!");
                 updateText();
             }
         });
 
-        loadInitialConsoleBufferFromDB();
-        //startLoadingConsoleBufferFromLogcat();
+        initializeText();
+        LogcatRecordingService.startLogcatRecording(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updateText();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogcatRecordingService.stopLogcatRecording(this);
     }
 
     @Override
@@ -66,7 +69,7 @@ public class ConsoleViewerActivity extends Activity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_reload:
-                updateText();
+                initializeText();
                 return true;
             case R.id.action_settings:
                 Log.d(this.getClass().toString(), "Settings");
@@ -75,16 +78,15 @@ public class ConsoleViewerActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadInitialConsoleBufferFromDB() {
-        List<StringLine> lines = StringLine.getAll();
-        for (StringLine line : lines) {
-            mConsoleBuffer.addStringLine(line.toString());
-        }
+    private void initializeText() {
+        mViewHolder.textView.setText("");
+        mConsoleBufferLoader.load();
         updateText();
     }
 
     private void updateText() {
-        // TODO: can use following code to update backing buffer of textView. Very useful when implementing line count restrictions.
+        // Note:
+        // Following code can be used to update backing buffer of textView. Very useful when implementing line count restrictions.
         /*
             Editable editable = mViewHolder.textView.getEditableText();
             if (editable != null) {
@@ -101,38 +103,6 @@ public class ConsoleViewerActivity extends Activity {
                     mViewHolder.scrollView.fullScroll(View.FOCUS_DOWN);
                 }
             });
-        } else {
-            mViewHolder.textView.setText("");
-            mViewHolder.scrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    mViewHolder.scrollView.fullScroll(View.FOCUS_UP);
-                }
-            });
         }
-    }
-
-    private void startLoadingConsoleBufferFromLogcat() {
-        // TODO: better asynchronous logcat reading like using a Service to make lifetime controllable. For now this is good enough.
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ConsoleBufferLogcatLoader logcatLoader = null;
-                try {
-                    logcatLoader = new ConsoleBufferLogcatLoader(mConsoleBuffer);
-                    logcatLoader.load();
-                } catch (IOException e) {
-                    Log.e(this.getClass().toString(), "unexpected exception", e);
-                } finally {
-                    if (logcatLoader != null) {
-                        try {
-                            logcatLoader.close();
-                        } catch (IOException e) {
-                            Log.e(this.getClass().toString(), "unexpected exception", e);
-                        }
-                    }
-                }
-            }
-        }).start();
     }
 }

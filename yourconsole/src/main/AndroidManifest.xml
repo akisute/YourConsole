@@ -10,7 +10,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <activity
             android:name="com.akisute.yourconsole.ConsoleViewerActivity"
             android:label="@string/app_name">
@@ -24,8 +23,12 @@
             android:name="com.akisute.yourconsole.SaveIntentService"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.akisute.yourconsole.action.SAVE" />
+                <action android:name="com.akisute.yourconsole.action.SAVE"/>
             </intent-filter>
+        </service>
+        <service
+            android:name="com.akisute.yourconsole.LogcatRecordingService"
+            android:exported="false">
         </service>
 
         <meta-data
@@ -34,8 +37,6 @@
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="1"/>
-
-
     </application>
 
 </manifest>
