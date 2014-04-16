@@ -2,6 +2,7 @@ package com.akisute.yourconsole;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,8 +12,10 @@ import android.widget.TextView;
 
 import com.akisute.yourconsole.model.ConsoleBuffer;
 import com.akisute.yourconsole.model.ConsoleBufferLogcatLoader;
+import com.akisute.yourconsole.model.StringLine;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ConsoleViewerActivity extends Activity {
 
@@ -42,7 +45,8 @@ public class ConsoleViewerActivity extends Activity {
             }
         });
 
-        startLoadingConsoleBufferFromLogcat();
+        loadInitialConsoleBufferFromDB();
+        //startLoadingConsoleBufferFromLogcat();
     }
 
     @Override
@@ -69,6 +73,14 @@ public class ConsoleViewerActivity extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loadInitialConsoleBufferFromDB() {
+        List<StringLine> lines = StringLine.getAll();
+        for (StringLine line : lines) {
+            mConsoleBuffer.addStringLine(line.toString());
+        }
+        updateText();
     }
 
     private void updateText() {

@@ -3,12 +3,18 @@ package com.akisute.yourconsole.model;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.akisute.yourconsole.helper.LogcatHelper;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LogcatLine {
+@Table(name = "LogcatLine")
+public class LogcatLine extends Model {
 
     public static final String LOGCAT_DATE_FORMAT = "MM-dd HH:mm:ss.SSS";
 
@@ -25,14 +31,22 @@ public class LogcatLine {
                     "(\\d+)" +
                     // optional weird number that only occurs on ZTE blade
                     "(?:\\*\\s*\\d+)?" +
-                    "\\): ");
+                    "\\): "
+    );
 
+    @Column
     private int mLogLevel;
+    @Column
     private String mTag;
+    @Column
     private String mLogOutput;
+    @Column
     private int mProcessId = -1;
+    @Column
     private String mTimestamp;
+    @Column
     private boolean mExpanded = false;
+    @Column
     private boolean mHighlighted = false;
 
     public int getLogLevel() {
@@ -125,6 +139,10 @@ public class LogcatLine {
         }
 
         return logcatLine;
+    }
+
+    public static List<LogcatLine> getAll() {
+        return new Select().from(LogcatLine.class).orderBy("Id ASC").execute();
     }
 
     public static int convertCharToLogLevel(char logLevelChar) {
