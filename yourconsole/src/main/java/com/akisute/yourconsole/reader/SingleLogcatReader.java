@@ -25,6 +25,11 @@ public class SingleLogcatReader extends AbsLogcatReader {
     }
 
     @Override
+    public boolean isReadyToRead() {
+        return (mLastLine == null);
+    }
+
+    @Override
     public String readLine() throws IOException {
         String line = mBufferedReader.readLine();
 
@@ -35,6 +40,12 @@ public class SingleLogcatReader extends AbsLogcatReader {
         }
 
         return line;
+    }
+
+    @Override
+    public void skipLine() throws IOException {
+        // Just a sugar syntax of readLine()
+        readLine();
     }
 
     @Override

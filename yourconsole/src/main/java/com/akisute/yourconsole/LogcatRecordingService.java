@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 import com.akisute.yourconsole.helper.LogcatHelper;
+import com.akisute.yourconsole.helper.PreferenceHelper;
 import com.akisute.yourconsole.intent.Intents;
 import com.akisute.yourconsole.model.LogcatLine;
 import com.akisute.yourconsole.reader.LogcatReader;
@@ -77,6 +78,7 @@ public class LogcatRecordingService extends IntentService {
             while (!mKilled && (line = mLogcatReader.readLine()) != null) {
                 LogcatLine logcatLine = LogcatLine.newLogLine(line, true);
                 SaveIntentService.startActionSave(this, logcatLine);
+                PreferenceHelper.setLastReadLine(this, line);
             }
         } catch (IOException e) {
             Log.e(this.getClass().toString(), "unexpected exception", e);
@@ -86,12 +88,13 @@ public class LogcatRecordingService extends IntentService {
     }
 
     private void initializeLogcatReader() throws IOException {
-        mLogcatReader = new SingleLogcatReader(LogcatHelper.BUFFER_MAIN, null);
-//        while (!mKilled && !mLogcatReader.isReadyToRead()) {
-//            mLogcatReader.skipLine();
-//            // keep skipping lines until we find one that is past the last log line, i.e.
-//            // it's ready to record
-//        }
+        String lastReadLine = PreferenceHelper.getLastReadLine(this);
+        mLogcatReader = new SingleLogcatReader(LogcatHelper.BUFFER_MAIN, lastReadLine);
+        while (!mKilled && !mLogcatReader.isReadyToRead()) {
+            mLogcatReader.skipLine();
+            // keep skipping lines until we find one that is past the last log line, i.e.
+            // it's ready to record
+        }
     }
 
     private void killProcess() {

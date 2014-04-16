@@ -43,6 +43,7 @@ public class ConsoleViewerActivity extends Activity {
         });
 
         initializeText();
+        mConsoleBufferLoader.startTailing();
         LogcatRecordingService.startLogcatRecording(this);
     }
 
@@ -55,6 +56,7 @@ public class ConsoleViewerActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mConsoleBufferLoader.stopTailing();
         LogcatRecordingService.stopLogcatRecording(this);
     }
 
@@ -85,6 +87,7 @@ public class ConsoleViewerActivity extends Activity {
     }
 
     private void updateText() {
+        // TODO: updateText() when ConsoleBufferLoader.OnTailEvent has been fired.
         // Note:
         // Following code can be used to update backing buffer of textView. Very useful when implementing line count restrictions.
         /*

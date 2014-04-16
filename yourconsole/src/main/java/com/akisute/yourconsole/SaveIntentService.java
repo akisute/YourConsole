@@ -53,6 +53,7 @@ public class SaveIntentService extends IntentService {
             MText model = MText.newInstance(senderPackageName, mimeType, text);
             if (model != null) {
                 model.save();
+                // TODO: send out OnSaveEvent here
                 ActiveAndroid.setTransactionSuccessful();
             }
         } finally {

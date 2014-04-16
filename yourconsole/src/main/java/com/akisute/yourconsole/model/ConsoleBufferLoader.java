@@ -35,4 +35,12 @@ public class ConsoleBufferLoader {
         }
     }
 
+    public void startTailing() {
+        // TODO: start listening to SaveIntentService.OnSaveEvent and tail-load when they're fired. Send OnTailEvent after tail-load is finished.
+    }
+
+    public void stopTailing() {
+        // TODO: stop listening events and sending out events.
+    }
+
 }
