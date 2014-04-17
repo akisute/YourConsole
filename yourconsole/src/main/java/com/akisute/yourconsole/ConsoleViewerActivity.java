@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.akisute.yourconsole.model.ConsoleBuffer;
 import com.akisute.yourconsole.model.ConsoleBufferLoader;
+import com.akisute.yourconsole.util.GlobalEventBus;
+import com.squareup.otto.Subscribe;
 
 public class ConsoleViewerActivity extends Activity {
 
@@ -43,6 +45,7 @@ public class ConsoleViewerActivity extends Activity {
         });
 
         initializeText();
+        GlobalEventBus.getInstance().register(this);
         mConsoleBufferLoader.startTailing();
         LogcatRecordingService.startLogcatRecording(this);
     }
@@ -56,6 +59,7 @@ public class ConsoleViewerActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        GlobalEventBus.getInstance().unregister(this);
         mConsoleBufferLoader.stopTailing();
         LogcatRecordingService.stopLogcatRecording(this);
     }
@@ -80,6 +84,11 @@ public class ConsoleViewerActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Subscribe
+    public void onTailEvent(ConsoleBufferLoader.OnTailEvent event) {
+        updateText();
+    }
+
     private void initializeText() {
         mViewHolder.textView.setText("");
         mConsoleBufferLoader.load();
@@ -87,7 +96,6 @@ public class ConsoleViewerActivity extends Activity {
     }
 
     private void updateText() {
-        // TODO: updateText() when ConsoleBufferLoader.OnTailEvent has been fired.
         // Note:
         // Following code can be used to update backing buffer of textView. Very useful when implementing line count restrictions.
         /*

@@ -8,9 +8,9 @@ import com.activeandroid.ActiveAndroid;
 import com.akisute.yourconsole.intent.Intents;
 import com.akisute.yourconsole.model.LogcatLine;
 import com.akisute.yourconsole.model.MText;
+import com.akisute.yourconsole.util.GlobalEventBus;
 
 public class SaveIntentService extends IntentService {
-
 
     public static void startActionSave(Context context, String text) {
         Intent intent = new Intent(context, SaveIntentService.class);
@@ -53,11 +53,23 @@ public class SaveIntentService extends IntentService {
             MText model = MText.newInstance(senderPackageName, mimeType, text);
             if (model != null) {
                 model.save();
-                // TODO: send out OnSaveEvent here
+                GlobalEventBus.getInstance().postInMainThread(new OnSaveEvent(model));
                 ActiveAndroid.setTransactionSuccessful();
             }
         } finally {
             ActiveAndroid.endTransaction();
+        }
+    }
+
+    public static class OnSaveEvent {
+        private MText mSavedTextModel;
+
+        public  MText getSavedTextModel () {
+            return mSavedTextModel;
+        }
+
+        public OnSaveEvent(MText savedTextModel) {
+            mSavedTextModel = savedTextModel;
         }
     }
 }

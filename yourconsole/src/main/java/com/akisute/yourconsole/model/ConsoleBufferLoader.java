@@ -1,6 +1,9 @@
 package com.akisute.yourconsole.model;
 
+import com.akisute.yourconsole.SaveIntentService;
 import com.akisute.yourconsole.intent.Intents;
+import com.akisute.yourconsole.util.GlobalEventBus;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
@@ -19,28 +22,43 @@ public class ConsoleBufferLoader {
         mConsoleBuffer.clear();
         List<MText> models = MText.getAll();
         for (MText model : models) {
-            if (Intents.MIME_TYPE_PLAINTEXT.equals(model.getMimeType())) {
-                String text = model.getText();
-                if (text != null) {
-                    String[] lines = text.split("\n");
-                    for (String line : lines) {
-                        LogcatLine l = LogcatLine.newLogLine(line, true);
-                        mConsoleBuffer.addLogcatLine(l);
-                    }
-                }
-            } else if (Intents.MIME_TYPE_LOGCAT.equals(model.getMimeType())) {
-                String s = model.getText();
-                mConsoleBuffer.addString(s);
-            }
+            loadModelIntoConsoleBuffer(model);
         }
     }
 
     public void startTailing() {
-        // TODO: start listening to SaveIntentService.OnSaveEvent and tail-load when they're fired. Send OnTailEvent after tail-load is finished.
+        GlobalEventBus.getInstance().register(this);
     }
 
     public void stopTailing() {
-        // TODO: stop listening events and sending out events.
+        GlobalEventBus.getInstance().unregister(this);
     }
 
+    private void loadModelIntoConsoleBuffer(MText model) {
+        if (Intents.MIME_TYPE_PLAINTEXT.equals(model.getMimeType())) {
+            String text = model.getText();
+            if (text != null) {
+                String[] lines = text.split("\n");
+                for (String line : lines) {
+                    LogcatLine l = LogcatLine.newLogLine(line, true);
+                    mConsoleBuffer.addLogcatLine(l);
+                }
+            }
+        } else if (Intents.MIME_TYPE_LOGCAT.equals(model.getMimeType())) {
+            String s = model.getText();
+            mConsoleBuffer.addString(s);
+        }
+    }
+
+    @Subscribe
+    public void onSaveEvent(SaveIntentService.OnSaveEvent event) {
+        MText model = event.getSavedTextModel();
+        if (model != null) {
+            loadModelIntoConsoleBuffer(model);
+            GlobalEventBus.getInstance().post(new OnTailEvent());
+        }
+    }
+
+    public static class OnTailEvent {
+    }
 }
