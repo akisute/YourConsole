@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-/**
- * Created by JP11688 on 2014/04/16.
- */
 public class PreferenceHelper {
 
     public static String getLastReadLine(Context context) {
