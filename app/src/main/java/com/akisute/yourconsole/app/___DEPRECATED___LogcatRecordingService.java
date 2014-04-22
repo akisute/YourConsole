@@ -17,7 +17,7 @@ import com.akisute.yourconsole.app.reader.SingleLogcatReader;
 import java.io.IOException;
 
 
-public class LogcatRecordingService extends IntentService {
+public class ___DEPRECATED___LogcatRecordingService extends IntentService {
 
     private LogcatReader mLogcatReader;
     private boolean mKilled;
@@ -27,24 +27,24 @@ public class LogcatRecordingService extends IntentService {
         @Override
         public void onReceive(Context context, Intent intent) {
             killProcess();
-            context.stopService(new Intent(context, LogcatRecordingService.class));
+            context.stopService(new Intent(context, ___DEPRECATED___LogcatRecordingService.class));
         }
     };
 
     public static void startLogcatRecording(Context context) {
-        Intent intent = new Intent(context, LogcatRecordingService.class);
+        Intent intent = new Intent(context, ___DEPRECATED___LogcatRecordingService.class);
         intent.setAction(Intents.ACTION_START_LOGCAT_RECORDING);
         context.startService(intent);
     }
 
     public static void stopLogcatRecording(Context context) {
-        Intent intent = new Intent(context, LogcatRecordingService.class);
+        Intent intent = new Intent(context, ___DEPRECATED___LogcatRecordingService.class);
         intent.setAction(Intents.ACTION_STOP_LOGCAT_RECORDING);
         context.startService(intent);
     }
 
-    public LogcatRecordingService() {
-        super("LogcatRecordingService");
+    public ___DEPRECATED___LogcatRecordingService() {
+        super("___DEPRECATED___LogcatRecordingService");
     }
 
     @Override

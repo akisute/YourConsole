@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:support-v4:19.0.+"
+    compile "com.android.support:support-v4:19.+"
     compile "com.squareup.dagger:dagger:1.2.+"
     compile "com.squareup.dagger:dagger-compiler:1.2.+"
     compile "com.squareup:otto:1.3.+"

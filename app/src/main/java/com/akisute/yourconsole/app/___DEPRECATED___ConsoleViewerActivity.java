@@ -15,7 +15,7 @@ import com.akisute.yourconsole.app.model.ConsoleBufferLoader;
 import com.akisute.yourconsole.app.util.GlobalEventBus;
 import com.squareup.otto.Subscribe;
 
-public class ConsoleViewerActivity extends Activity {
+public class ___DEPRECATED___ConsoleViewerActivity extends Activity {
 
     class ViewHolder {
         ScrollView scrollView;
@@ -48,7 +48,7 @@ public class ConsoleViewerActivity extends Activity {
         initializeText();
         GlobalEventBus.getInstance().register(this);
         mConsoleBufferLoader.startTailing();
-        LogcatRecordingService.startLogcatRecording(this);
+        ___DEPRECATED___LogcatRecordingService.startLogcatRecording(this);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ConsoleViewerActivity extends Activity {
         super.onDestroy();
         GlobalEventBus.getInstance().unregister(this);
         mConsoleBufferLoader.stopTailing();
-        LogcatRecordingService.stopLogcatRecording(this);
+        ___DEPRECATED___LogcatRecordingService.stopLogcatRecording(this);
     }
 
     @Override

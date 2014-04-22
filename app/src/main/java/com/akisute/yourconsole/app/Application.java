@@ -2,6 +2,7 @@ package com.akisute.yourconsole.app;
 
 import com.activeandroid.ActiveAndroid;
 import com.akisute.yourconsole.app.dagger.ApplicationModule;
+import com.akisute.yourconsole.app.dagger.ModelModule;
 
 import dagger.ObjectGraph;
 
@@ -29,7 +30,8 @@ public class Application extends android.app.Application {
 
     private Object[] getModules() {
         return new Object[]{
-                new ApplicationModule(this)
+                new ApplicationModule(this),
+                new ModelModule()
         };
     }
 }

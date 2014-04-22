@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".app.ConsoleViewerActivity"
+            android:name="com.akisute.yourconsole.app.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -20,14 +20,14 @@
         </activity>
 
         <service
-            android:name=".app.SaveIntentService"
+            android:name="com.akisute.yourconsole.app.SaveIntentService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.akisute.yourconsole.action.SAVE"/>
             </intent-filter>
         </service>
         <service
-            android:name=".app.LogcatRecordingService"
+            android:name=".app.___DEPRECATED___LogcatRecordingService"
             android:exported="false">
         </service>
 
