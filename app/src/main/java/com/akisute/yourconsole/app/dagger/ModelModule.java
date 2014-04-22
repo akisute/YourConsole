@@ -1,35 +1,29 @@
 package com.akisute.yourconsole.app.dagger;
 
+import android.content.Context;
+
 import com.akisute.yourconsole.app.ConsoleViewerFragment;
 import com.akisute.yourconsole.app.LogcatRecordingService;
 import com.akisute.yourconsole.app.SaveIntentService;
-import com.akisute.yourconsole.app.model.ConsoleListAdapter;
 import com.akisute.yourconsole.app.model.LogcatRecordingManager;
-import com.akisute.yourconsole.app.reader.LogcatReader;
-import com.akisute.yourconsole.app.reader.SingleLogcatReader;
 import com.akisute.yourconsole.app.util.GlobalEventBus;
 import com.akisute.yourconsole.app.util.GlobalPreference;
-
-import java.io.IOException;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Provides instances that are completely independent to android contexts.
- * These instances should be inject statically on compile time rather than using runtime injection.
- */
-@Module (
+@Module(
+        includes = {
+                ApplicationModule.class
+        },
         injects = {
-                // Activity and Fragment
+                // Activity, Fragment, Service (dynamically injected on create by Daggered classes using ObjectGraph.inject(), uses member injections)
                 ConsoleViewerFragment.class,
-                // Service
                 LogcatRecordingService.class,
                 SaveIntentService.class,
-                // Model
-                ConsoleListAdapter.class,
+                // Model (statically injected recursively when ObjectGraph.inject() is called, uses constructor injections and providers)
                 LogcatRecordingManager.class
         }
 )
@@ -43,12 +37,12 @@ public class ModelModule {
 
     @Provides
     @Singleton
-    GlobalPreference provideGlobalPreference() {
-        return new GlobalPreference();
+    GlobalPreference provideGlobalPreference(@ForApplication Context context) {
+        return new GlobalPreference(context);
     }
 
     @Provides
-    LogcatRecordingManager provideLogcatRecordingManager() {
-        return new LogcatRecordingManager();
+    LogcatRecordingManager provideLogcatRecordingManager(GlobalEventBus globalEventBus, GlobalPreference globalPreference) {
+        return new LogcatRecordingManager(globalEventBus, globalPreference);
     }
 }

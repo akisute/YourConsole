@@ -30,7 +30,7 @@ public class ConsoleListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void addLine(String line){
+    public void addLine(String line) {
         mLineList.add(line);
         notifyDataSetChanged();
     }

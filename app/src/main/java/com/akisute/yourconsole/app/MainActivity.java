@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import com.akisute.yourconsole.R;
-import com.akisute.yourconsole.app.dagger.DaggeredActivity;
 
 public class MainActivity extends Activity {
 
@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.action_start_logcat_recording:
                 LogcatRecordingService.startLogcatRecording(this);
                 return true;

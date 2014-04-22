@@ -1,6 +1,5 @@
 package com.akisute.yourconsole.app;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
@@ -73,7 +72,6 @@ public class LogcatRecordingService extends DaggeredService {
 
     private void handleStartLogcatRecording() {
         com.akisute.yourconsole.app.Application application = (Application) getApplication();
-        application.validateObjectGraph();
         mLogcatRecordingManager.start();
         mGlobalEventBus.register(this);
     }

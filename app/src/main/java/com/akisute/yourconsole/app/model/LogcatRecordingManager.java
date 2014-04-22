@@ -18,13 +18,16 @@ import javax.inject.Inject;
 public class LogcatRecordingManager {
 
     private final ScheduledExecutorService mExecutorService = Executors.newSingleThreadScheduledExecutor();
-
-    @Inject
-    GlobalEventBus mGlobalEventBus;
-    @Inject
-    GlobalPreference mGlobalPreference;
+    private final GlobalEventBus mGlobalEventBus;
+    private final GlobalPreference mGlobalPreference;
 
     private String mLastReadLine;
+
+    @Inject
+    public LogcatRecordingManager(GlobalEventBus globalEventBus, GlobalPreference globalPreference) {
+        mGlobalEventBus = globalEventBus;
+        mGlobalPreference = globalPreference;
+    }
 
     public void start() {
         mLastReadLine = mGlobalPreference.getLastReadLine();

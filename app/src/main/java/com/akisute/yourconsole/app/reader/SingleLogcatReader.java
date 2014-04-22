@@ -2,13 +2,12 @@ package com.akisute.yourconsole.app.reader;
 
 import android.text.TextUtils;
 
+import com.akisute.yourconsole.app.helper.LogcatHelper;
+import com.akisute.yourconsole.app.helper.RuntimeHelper;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.CharBuffer;
-
-import com.akisute.yourconsole.app.helper.LogcatHelper;
-import com.akisute.yourconsole.app.helper.RuntimeHelper;
 
 public class SingleLogcatReader extends LogcatReader {
 

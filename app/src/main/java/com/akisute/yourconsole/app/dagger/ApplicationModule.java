@@ -14,7 +14,7 @@ import dagger.Provides;
 /**
  * Provides the application context and classes that depends on application contexts.
  */
-@Module (
+@Module(
         injects = {
                 GlobalPreference.class
         }

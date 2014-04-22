@@ -9,9 +9,13 @@ import com.akisute.yourconsole.app.dagger.ForApplication;
 import javax.inject.Inject;
 
 public class GlobalPreference {
+
+    private final Context mContext;
+
     @Inject
-    @ForApplication
-    Context mContext;
+    public GlobalPreference(@ForApplication Context context) {
+        mContext = context;
+    }
 
     public String getLastReadLine() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);

@@ -2,7 +2,6 @@ package com.akisute.yourconsole.app.dagger;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.os.Bundle;
 
 public abstract class DaggeredFragment extends Fragment {
     @Override

@@ -1,7 +1,6 @@
 package com.akisute.yourconsole.app;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +18,10 @@ import javax.inject.Inject;
 
 public class ConsoleViewerFragment extends DaggeredFragment {
 
+    private class ViewHolder {
+        ListView listView;
+    }
+
     private final DataSetObserver mDataSetObserver = new DataSetObserver() {
         @Override
         public void onChanged() {
@@ -30,10 +33,8 @@ public class ConsoleViewerFragment extends DaggeredFragment {
     @Inject
     GlobalEventBus mGlobalEventBus;
 
+    private ViewHolder mViewHolder;
     private ConsoleListAdapter mAdapter;
-
-    public ConsoleViewerFragment() {
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -41,6 +42,7 @@ public class ConsoleViewerFragment extends DaggeredFragment {
         mAdapter = new ConsoleListAdapter(activity);
         mAdapter.registerDataSetObserver(mDataSetObserver);
         mGlobalEventBus.register(this);
+        // TODO: should initially load saved lines from DB into mAdapter
     }
 
     @Override
@@ -55,8 +57,9 @@ public class ConsoleViewerFragment extends DaggeredFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_console_viewer, container, false);
 
-        ListView listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setAdapter(mAdapter);
+        mViewHolder = new ViewHolder();
+        mViewHolder.listView = (ListView) view.findViewById(android.R.id.list);
+        mViewHolder.listView.setAdapter(mAdapter);
 
         return view;
     }
@@ -64,5 +67,12 @@ public class ConsoleViewerFragment extends DaggeredFragment {
     @Subscribe
     public void onSaveEvent(SaveIntentService.OnSaveEvent event) {
         mAdapter.addLine(event.getSavedTextModel().getText());
+        final int position = mAdapter.getCount()-1;
+        mViewHolder.listView.post(new Runnable() {
+            @Override
+            public void run() {
+                mViewHolder.listView.smoothScrollToPosition(position);
+            }
+        });
     }
 }
