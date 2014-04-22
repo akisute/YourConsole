@@ -5,13 +5,13 @@ import android.os.Looper;
 
 import com.squareup.otto.Bus;
 
-public final class GlobalEventBus extends Bus {
+public class GlobalEventBus extends Bus {
 
     private static final GlobalEventBus INSTANCE = new GlobalEventBus();
 
     private Handler mMainThreadHandler;
 
-    private GlobalEventBus() {
+    public GlobalEventBus() {
         super();
         mMainThreadHandler = new Handler(Looper.getMainLooper());
     }
