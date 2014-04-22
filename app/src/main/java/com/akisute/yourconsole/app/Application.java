@@ -1,8 +1,11 @@
 package com.akisute.yourconsole.app;
 
+import android.util.Log;
+
 import com.activeandroid.ActiveAndroid;
 import com.akisute.yourconsole.app.dagger.ApplicationModule;
 import com.akisute.yourconsole.app.dagger.ModelModule;
+import com.akisute.yourconsole.app.model.LogcatRecordingManager;
 
 import dagger.ObjectGraph;
 
@@ -26,6 +29,11 @@ public class Application extends android.app.Application {
 
     public void inject(Object object) {
         mObjectGraph.inject(object);
+    }
+
+    public void validateObjectGraph() {
+        LogcatRecordingManager abesi = mObjectGraph.get(LogcatRecordingManager.class);
+        Log.d("abesi", abesi.toString());
     }
 
     private Object[] getModules() {

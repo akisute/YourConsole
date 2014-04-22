@@ -30,7 +30,7 @@ import dagger.Provides;
                 SaveIntentService.class,
                 // Model
                 ConsoleListAdapter.class,
-                LogcatRecordingManager.class,
+                LogcatRecordingManager.class
         }
 )
 public class ModelModule {
@@ -47,4 +47,8 @@ public class ModelModule {
         return new GlobalPreference();
     }
 
+    @Provides
+    LogcatRecordingManager provideLogcatRecordingManager() {
+        return new LogcatRecordingManager();
+    }
 }

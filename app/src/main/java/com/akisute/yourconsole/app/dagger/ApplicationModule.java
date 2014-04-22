@@ -16,7 +16,7 @@ import dagger.Provides;
  */
 @Module (
         injects = {
-                GlobalPreference.class,
+                GlobalPreference.class
         }
 )
 public class ApplicationModule {

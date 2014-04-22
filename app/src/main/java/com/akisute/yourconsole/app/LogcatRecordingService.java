@@ -15,10 +15,10 @@ import javax.inject.Inject;
 
 public class LogcatRecordingService extends DaggeredService {
 
-    private final LogcatRecordingManager mLogcatRecordingManager = new LogcatRecordingManager();
-
     @Inject
     GlobalEventBus mGlobalEventBus;
+    @Inject
+    LogcatRecordingManager mLogcatRecordingManager;
 
     public static void startLogcatRecording(Context context) {
         Intent intent = new Intent(context, LogcatRecordingService.class);
@@ -72,6 +72,8 @@ public class LogcatRecordingService extends DaggeredService {
     }
 
     private void handleStartLogcatRecording() {
+        com.akisute.yourconsole.app.Application application = (Application) getApplication();
+        application.validateObjectGraph();
         mLogcatRecordingManager.start();
         mGlobalEventBus.register(this);
     }
