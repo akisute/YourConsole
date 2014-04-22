@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 
-public class DaggeredFragment extends Fragment {
+public abstract class DaggeredFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

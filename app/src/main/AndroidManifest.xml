@@ -15,6 +15,7 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -27,7 +28,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".app.___DEPRECATED___LogcatRecordingService"
+            android:name="com.akisute.yourconsole.app.LogcatRecordingService"
             android:exported="false">
         </service>
 
@@ -37,6 +38,8 @@
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="1"/>
+
+
     </application>
 
 </manifest>

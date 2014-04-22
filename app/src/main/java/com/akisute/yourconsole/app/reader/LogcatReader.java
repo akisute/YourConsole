@@ -1,10 +1,14 @@
 package com.akisute.yourconsole.app.reader;
 
-import java.io.Closeable;
 import java.io.IOException;
+import java.io.Reader;
 
-public interface LogcatReader extends Closeable {
-    public boolean isReadyToRead();
-    public String readLine() throws IOException;
-    public void skipLine() throws IOException;
+public abstract class LogcatReader extends Reader {
+
+    public abstract String readLine() throws IOException;
+
+    public abstract void skipLine() throws IOException;
+
+    public abstract boolean isReadyToReadNewLines();
+
 }

@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import com.akisute.yourconsole.R;
 import com.akisute.yourconsole.app.dagger.DaggeredActivity;
 
-public class MainActivity extends DaggeredActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,22 +17,26 @@ public class MainActivity extends DaggeredActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_start_logcat_recording:
+                LogcatRecordingService.startLogcatRecording(this);
+                return true;
+            case R.id.action_stop_logcat_recording:
+                LogcatRecordingService.stopLogcatRecording(this);
+                return true;
+            case R.id.action_settings:
+                SaveIntentService.startActionSave(this, "Settings");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
 }

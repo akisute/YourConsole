@@ -1,13 +1,11 @@
 package com.akisute.yourconsole.app.dagger;
 
+import android.app.Service;
 
-import android.app.Activity;
-import android.os.Bundle;
-
-public abstract class DaggeredActivity extends Activity {
+public abstract class DaggeredService extends Service {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate() {
+        super.onCreate();
         com.akisute.yourconsole.app.Application application = (com.akisute.yourconsole.app.Application) getApplication();
         application.inject(this);
     }

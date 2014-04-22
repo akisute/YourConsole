@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">YourConsole</string>
-    <string name="action_reload">Reload</string>
+    <string name="action_start_logcat_recording">Start Logcat Recording</string>
+    <string name="action_stop_logcat_recording">Stop Logcat Recording</string>
     <string name="action_settings">Settings</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam fermentum nunc gravida blandit interdum. Cras ullamcorper imperdiet ligula, in facilisis nisi pellentesque sed. Sed blandit convallis malesuada. Donec feugiat at enim in varius. Nulla pretium risus sit amet sapien facilisis, a aliquam leo sollicitudin. Nullam ultricies aliquet urna. Duis viverra massa in arcu pharetra malesuada. Aenean ullamcorper convallis orci ut mattis. Nam vestibulum elementum lacus laoreet sagittis. Aenean vitae semper velit. Integer viverra non orci quis egestas.
 

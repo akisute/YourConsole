@@ -5,12 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.activeandroid.ActiveAndroid;
+import com.akisute.yourconsole.app.dagger.DaggeredIntentService;
 import com.akisute.yourconsole.app.intent.Intents;
 import com.akisute.yourconsole.app.model.LogcatLine;
 import com.akisute.yourconsole.app.model.MText;
 import com.akisute.yourconsole.app.util.GlobalEventBus;
 
-public class SaveIntentService extends IntentService {
+import javax.inject.Inject;
+
+public class SaveIntentService extends DaggeredIntentService {
+
+    @Inject
+    GlobalEventBus mGlobalEventBus;
 
     public static void startActionSave(Context context, String text) {
         Intent intent = new Intent(context, SaveIntentService.class);
@@ -53,7 +59,7 @@ public class SaveIntentService extends IntentService {
             MText model = MText.newInstance(senderPackageName, mimeType, text);
             if (model != null) {
                 model.save();
-                GlobalEventBus.getInstance().postInMainThread(new OnSaveEvent(model));
+                mGlobalEventBus.postInMainThread(new OnSaveEvent(model));
                 ActiveAndroid.setTransactionSuccessful();
             }
         } finally {
@@ -62,14 +68,15 @@ public class SaveIntentService extends IntentService {
     }
 
     public static class OnSaveEvent {
-        private MText mSavedTextModel;
 
-        public  MText getSavedTextModel () {
-            return mSavedTextModel;
-        }
+        private final MText mSavedTextModel;
 
         public OnSaveEvent(MText savedTextModel) {
             mSavedTextModel = savedTextModel;
+        }
+
+        public MText getSavedTextModel() {
+            return mSavedTextModel;
         }
     }
 }

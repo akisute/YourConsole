@@ -5,15 +5,16 @@ import android.text.TextUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.CharBuffer;
 
 import com.akisute.yourconsole.app.helper.LogcatHelper;
 import com.akisute.yourconsole.app.helper.RuntimeHelper;
 
-public class SingleLogcatReader extends AbsLogcatReader {
+public class SingleLogcatReader extends LogcatReader {
 
-    private Process mLogcatProcess;
-    private BufferedReader mBufferedReader;
-    private String mLogBufferName;
+    private final Process mLogcatProcess;
+    private final BufferedReader mBufferedReader;
+    private final String mLogBufferName;
     private String mLastLine;
 
     public SingleLogcatReader(String logBufferName, String lastLine) throws IOException {
@@ -25,8 +26,38 @@ public class SingleLogcatReader extends AbsLogcatReader {
     }
 
     @Override
-    public boolean isReadyToRead() {
-        return (mLastLine == null);
+    public int read(char[] chars, int i, int i2) throws IOException {
+        throw new UnsupportedOperationException("Must use readLine() instead");
+    }
+
+    @Override
+    public void reset() throws IOException {
+        // Do nothing, unsupported
+    }
+
+    @Override
+    public boolean ready() throws IOException {
+        return mBufferedReader.ready();
+    }
+
+    @Override
+    public long skip(long charCount) throws IOException {
+        throw new UnsupportedOperationException("Must use skipLine() instead");
+    }
+
+    @Override
+    public void mark(int readLimit) throws IOException {
+        // Do nothing, unsupported
+    }
+
+    @Override
+    public boolean markSupported() {
+        return false;
+    }
+
+    @Override
+    public int read() throws IOException {
+        throw new UnsupportedOperationException("Must use readLine() instead");
     }
 
     @Override
@@ -49,6 +80,11 @@ public class SingleLogcatReader extends AbsLogcatReader {
     }
 
     @Override
+    public boolean isReadyToReadNewLines() {
+        return (mLastLine == null);
+    }
+
+    @Override
     public void close() throws IOException {
         if (mLogcatProcess != null) {
             RuntimeHelper.destroy(mLogcatProcess);
@@ -56,10 +92,6 @@ public class SingleLogcatReader extends AbsLogcatReader {
         if (mBufferedReader != null) {
             mBufferedReader.close();
         }
-    }
-
-    public void setLastLine(String lastLine) {
-        mLastLine = lastLine;
     }
 
     private boolean isAfterLastTime(String line) {
