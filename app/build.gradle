@@ -20,6 +20,8 @@ android {
 
 dependencies {
     compile "com.android.support:support-v4:19.0.+"
+    compile "com.squareup.dagger:dagger:1.2.+"
+    compile "com.squareup.dagger:dagger-compiler:1.2.+"
     compile "com.squareup:otto:1.3.+"
     compile files('libs/activeandroid.jar')
     compile fileTree(dir: 'libs', include: ['*.jar'])

@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
 
     <application
-        android:name="com.activeandroid.app.Application"
+        android:name="com.akisute.yourconsole.app.Application"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
