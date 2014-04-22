@@ -32,6 +32,11 @@ public class Application extends android.app.Application {
     }
 
     public void validateObjectGraph() {
+
+        // TODO: THIS DOES NOT WORK!!
+        // Here's a reason: https://github.com/square/dagger/issues/367
+        // So problem is LogcatRecordingManager is NEWed by Module, which means the instance is not created by ObjectGraph nor injected dynamically by using inject().
+        // Thus I have to inject() manually or let constructor pass dependent instances. Kinda fuck.
         LogcatRecordingManager abesi = mObjectGraph.get(LogcatRecordingManager.class);
         Log.d("abesi", abesi.toString());
     }
