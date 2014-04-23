@@ -8,7 +8,7 @@ public abstract class DaggeredActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        com.akisute.yourconsole.app.Application application = (com.akisute.yourconsole.app.Application) getApplication();
+        DaggeredApplication application = (DaggeredApplication) getApplication();
         application.inject(this);
     }
 }

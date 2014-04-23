@@ -32,17 +32,17 @@ public class ConsoleViewerFragment extends DaggeredFragment {
 
     @Inject
     GlobalEventBus mGlobalEventBus;
+    @Inject
+    ConsoleListAdapter mAdapter;
 
     private ViewHolder mViewHolder;
-    private ConsoleListAdapter mAdapter;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mAdapter = new ConsoleListAdapter(activity);
         mAdapter.registerDataSetObserver(mDataSetObserver);
+        mAdapter.load();
         mGlobalEventBus.register(this);
-        // TODO: should initially load saved lines from DB into mAdapter
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ConsoleViewerFragment extends DaggeredFragment {
     @Subscribe
     public void onSaveEvent(SaveIntentService.OnSaveEvent event) {
         mAdapter.addLine(event.getSavedTextModel().getText());
-        final int position = mAdapter.getCount()-1;
+        final int position = mAdapter.getCount() - 1;
         mViewHolder.listView.post(new Runnable() {
             @Override
             public void run() {

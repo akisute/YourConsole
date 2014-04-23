@@ -12,7 +12,7 @@ public abstract class DaggeredIntentService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        com.akisute.yourconsole.app.Application application = (com.akisute.yourconsole.app.Application) getApplication();
+        DaggeredApplication application = (DaggeredApplication) getApplication();
         application.inject(this);
     }
 }

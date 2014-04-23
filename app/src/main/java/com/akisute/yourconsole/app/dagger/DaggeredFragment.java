@@ -7,7 +7,7 @@ public abstract class DaggeredFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        com.akisute.yourconsole.app.Application application = (com.akisute.yourconsole.app.Application) activity.getApplication();
+        DaggeredApplication application = (DaggeredApplication) activity.getApplication();
         application.inject(this);
     }
 }

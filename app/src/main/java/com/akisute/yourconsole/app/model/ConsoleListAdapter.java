@@ -7,8 +7,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.akisute.yourconsole.app.dagger.ForInjecting;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class ConsoleListAdapter extends BaseAdapter {
 
@@ -19,20 +23,9 @@ public class ConsoleListAdapter extends BaseAdapter {
     private final LayoutInflater mLayoutInflater;
     private List<String> mLineList = new ArrayList<String>();
 
-    public ConsoleListAdapter(Context context) {
+    @Inject
+    public ConsoleListAdapter(@ForInjecting Context context) {
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    public void setLineList(List<String> lineList) {
-        for (String line : lineList) {
-            mLineList.add(line);
-        }
-        notifyDataSetChanged();
-    }
-
-    public void addLine(String line) {
-        mLineList.add(line);
-        notifyDataSetChanged();
     }
 
     @Override
@@ -66,5 +59,21 @@ public class ConsoleListAdapter extends BaseAdapter {
         viewHolder.textView.setText(line);
 
         return convertView;
+    }
+
+    public void setLineList(List<String> lineList) {
+        for (String line : lineList) {
+            mLineList.add(line);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void addLine(String line) {
+        mLineList.add(line);
+        notifyDataSetChanged();
+    }
+
+    public void load() {
+        // TODO:
     }
 }
