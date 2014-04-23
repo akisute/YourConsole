@@ -36,7 +36,7 @@ public class ConsoleViewerFragment extends DaggeredFragment {
                 mViewHolder.listView.post(new Runnable() {
                     @Override
                     public void run() {
-                        mViewHolder.listView.smoothScrollToPosition(position);
+                        mViewHolder.listView.setSelection(position);
                     }
                 });
             }
