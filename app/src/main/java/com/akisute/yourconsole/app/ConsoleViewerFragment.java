@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -11,6 +14,7 @@ import android.widget.ListView;
 import com.akisute.yourconsole.R;
 import com.akisute.yourconsole.app.dagger.DaggeredFragment;
 import com.akisute.yourconsole.app.model.ConsoleListAdapter;
+import com.akisute.yourconsole.app.model.MText;
 import com.akisute.yourconsole.app.util.GlobalEventBus;
 import com.squareup.otto.Subscribe;
 
@@ -68,6 +72,7 @@ public class ConsoleViewerFragment extends DaggeredFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         LogcatRecordingService.startLogcatRecording(getActivity());
     }
 
@@ -86,6 +91,24 @@ public class ConsoleViewerFragment extends DaggeredFragment {
         mViewHolder.listView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.console_viewer_fragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_clear_all_log:
+                MText.removeAll();
+                mAdapter.clear();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Subscribe

@@ -26,16 +26,11 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_clear_all_log:
-                // TODO: make this fragment option and wipe adapter as well on invoke
-                MText.removeAll();
-                return true;
             case R.id.action_settings:
                 SaveIntentService.startActionSave(this, "Settings");
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
+                return false;
         }
     }
-
 }

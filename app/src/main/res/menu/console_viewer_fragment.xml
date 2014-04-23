@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.akisute.yourconsole.app.ConsoleViewerFragment">
+
+    <item
+        android:id="@+id/action_clear_all_log"
+        android:title="@string/action_clear_all_log"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"/>
+</menu>

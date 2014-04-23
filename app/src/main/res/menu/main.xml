@@ -3,15 +3,9 @@
       tools:context="com.akisute.yourconsole.app.MainActivity">
 
     <item
-        android:id="@+id/action_clear_all_log"
-        android:title="@string/action_clear_all_log"
-        android:icon="@android:drawable/ic_menu_delete"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"/>
-    <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:orderInCategory="100"
+        android:orderInCategory="1000"
         android:showAsAction="ifRoom"/>
 </menu>
