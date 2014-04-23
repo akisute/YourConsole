@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.akisute.yourconsole.R;
+import com.akisute.yourconsole.app.model.MText;
 
 public class MainActivity extends Activity {
 
@@ -25,11 +26,9 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_start_logcat_recording:
-                LogcatRecordingService.startLogcatRecording(this);
-                return true;
-            case R.id.action_stop_logcat_recording:
-                LogcatRecordingService.stopLogcatRecording(this);
+            case R.id.action_clear_all_log:
+                // TODO: make this fragment option and wipe adapter as well on invoke
+                MText.removeAll();
                 return true;
             case R.id.action_settings:
                 SaveIntentService.startActionSave(this, "Settings");

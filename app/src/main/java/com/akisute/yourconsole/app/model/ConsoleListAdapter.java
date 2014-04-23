@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.akisute.yourconsole.app.dagger.ForInjecting;
 
+import java.lang.reflect.MalformedParameterizedTypeException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class ConsoleListAdapter extends BaseAdapter {
     }
 
     private final LayoutInflater mLayoutInflater;
-    private List<String> mLineList = new ArrayList<String>();
+    private final List<MText> mTextList = new ArrayList<MText>();
 
     @Inject
     public ConsoleListAdapter(@ForInjecting Context context) {
@@ -30,12 +31,12 @@ public class ConsoleListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mLineList.size();
+        return mTextList.size();
     }
 
     @Override
-    public String getItem(int position) {
-        return mLineList.get(position);
+    public MText getItem(int position) {
+        return mTextList.get(position);
     }
 
     @Override
@@ -55,25 +56,25 @@ public class ConsoleListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        String line = getItem(position);
-        viewHolder.textView.setText(line);
+        MText textModel = getItem(position);
+        viewHolder.textView.setText(textModel.getText());
 
         return convertView;
     }
 
-    public void setLineList(List<String> lineList) {
-        for (String line : lineList) {
-            mLineList.add(line);
-        }
-        notifyDataSetChanged();
-    }
-
-    public void addLine(String line) {
-        mLineList.add(line);
+    public void clear() {
+        mTextList.clear();
         notifyDataSetChanged();
     }
 
     public void load() {
-        // TODO:
+        clear();
+        List<MText> textList = MText.getAll();
+        appendTexts(textList);
+    }
+
+    public void appendTexts(List<MText> textList) {
+        mTextList.addAll(textList);
+        notifyDataSetChanged();
     }
 }

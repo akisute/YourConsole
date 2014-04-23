@@ -14,6 +14,8 @@ import com.akisute.yourconsole.app.model.ConsoleListAdapter;
 import com.akisute.yourconsole.app.util.GlobalEventBus;
 import com.squareup.otto.Subscribe;
 
+import java.util.Arrays;
+
 import javax.inject.Inject;
 
 public class ConsoleViewerFragment extends DaggeredFragment {
@@ -27,6 +29,15 @@ public class ConsoleViewerFragment extends DaggeredFragment {
         public void onChanged() {
             super.onChanged();
             getActivity().setTitle(String.format("%s (%d Lines)", getResources().getString(R.string.app_name), mAdapter.getCount()));
+            if (mViewHolder != null) {
+                final int position = mAdapter.getCount() - 1;
+                mViewHolder.listView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mViewHolder.listView.smoothScrollToPosition(position);
+                    }
+                });
+            }
         }
     };
 
@@ -43,6 +54,7 @@ public class ConsoleViewerFragment extends DaggeredFragment {
         mAdapter.registerDataSetObserver(mDataSetObserver);
         mAdapter.load();
         mGlobalEventBus.register(this);
+
     }
 
     @Override
@@ -51,6 +63,18 @@ public class ConsoleViewerFragment extends DaggeredFragment {
         mGlobalEventBus.unregister(this);
         mAdapter.unregisterDataSetObserver(mDataSetObserver);
         mAdapter = null;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LogcatRecordingService.startLogcatRecording(getActivity());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LogcatRecordingService.stopLogcatRecording(getActivity());
     }
 
     @Override
@@ -66,13 +90,6 @@ public class ConsoleViewerFragment extends DaggeredFragment {
 
     @Subscribe
     public void onSaveEvent(SaveIntentService.OnSaveEvent event) {
-        mAdapter.addLine(event.getSavedTextModel().getText());
-        final int position = mAdapter.getCount() - 1;
-        mViewHolder.listView.post(new Runnable() {
-            @Override
-            public void run() {
-                mViewHolder.listView.smoothScrollToPosition(position);
-            }
-        });
+        mAdapter.appendTexts(Arrays.asList(event.getSavedTextModel()));
     }
 }
