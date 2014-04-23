@@ -41,8 +41,8 @@ public class LogcatRecordingManager {
     public void start() {
         mLastReadLine = mGlobalPreference.getLastReadLine();
         mBuffer = new ArrayList<LogcatLine>(BUFFER_INITIAL_CAPACITY);
-        mWorkerExecutorService.scheduleWithFixedDelay(new WorkerThread(), 0, 500, TimeUnit.MILLISECONDS);
-        mFlusherExecutorService.scheduleWithFixedDelay(new FlusherThread(), 501, 501, TimeUnit.MILLISECONDS);
+        mWorkerExecutorService.scheduleWithFixedDelay(new Worker(), 0, 500, TimeUnit.MILLISECONDS);
+        mFlusherExecutorService.scheduleWithFixedDelay(new Flusher(), 501, 501, TimeUnit.MILLISECONDS);
     }
 
     public void stop() {
@@ -51,19 +51,19 @@ public class LogcatRecordingManager {
         mGlobalPreference.setLastReadLine(mLastReadLine);
     }
 
-    private class WorkerThread extends Thread {
+    private class Worker implements Runnable {
         @Override
         public void run() {
             LogcatReader logcatReader = null;
             try {
                 logcatReader = new SingleLogcatReader(LogcatHelper.BUFFER_MAIN, mLastReadLine);
-                while (!isInterrupted() && !logcatReader.isReadyToReadNewLines()) {
+                while (!Thread.interrupted() && !logcatReader.isReadyToReadNewLines()) {
                     // Keep skipping lines until ready to read new lines of logcat
                     logcatReader.skipLine();
                 }
 
                 String line;
-                while (!isInterrupted() && (line = logcatReader.readLine()) != null) {
+                while (!Thread.interrupted() && (line = logcatReader.readLine()) != null) {
                     mLastReadLine = line;
                     LogcatLine logcatLine = LogcatLine.newLogLine(line, true);
                     mBufferLock.lock();
@@ -84,7 +84,7 @@ public class LogcatRecordingManager {
         }
     }
 
-    private class FlusherThread extends Thread {
+    private class Flusher implements Runnable {
         @Override
         public void run() {
             try {
