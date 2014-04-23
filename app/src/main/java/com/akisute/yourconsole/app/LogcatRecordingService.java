@@ -83,6 +83,6 @@ public class LogcatRecordingService extends DaggeredService {
 
     @Subscribe
     public void onNewLogcatLineEvent(LogcatRecordingManager.OnNewLogcatLineEvent event) {
-        SaveIntentService.startActionSave(this, event.getLogcatLine());
+        SaveIntentService.startActionSave(this, event.getLogcatLineList());
     }
 }

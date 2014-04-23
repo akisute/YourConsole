@@ -18,8 +18,6 @@ import com.akisute.yourconsole.app.model.MText;
 import com.akisute.yourconsole.app.util.GlobalEventBus;
 import com.squareup.otto.Subscribe;
 
-import java.util.Arrays;
-
 import javax.inject.Inject;
 
 public class ConsoleViewerFragment extends DaggeredFragment {
@@ -94,7 +92,7 @@ public class ConsoleViewerFragment extends DaggeredFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.console_viewer_fragment, menu);
     }
 
@@ -113,6 +111,6 @@ public class ConsoleViewerFragment extends DaggeredFragment {
 
     @Subscribe
     public void onSaveEvent(SaveIntentService.OnSaveEvent event) {
-        mAdapter.appendTexts(Arrays.asList(event.getSavedTextModel()));
+        mAdapter.appendTexts(event.getSavedTextModelList());
     }
 }
