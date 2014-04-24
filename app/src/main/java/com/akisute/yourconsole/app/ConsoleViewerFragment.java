@@ -20,23 +20,22 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-public class ConsoleViewerFragment extends DaggeredFragment {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
-    private class ViewHolder {
-        ListView listView;
-    }
+public class ConsoleViewerFragment extends DaggeredFragment {
 
     private final DataSetObserver mDataSetObserver = new DataSetObserver() {
         @Override
         public void onChanged() {
             super.onChanged();
             getActivity().setTitle(String.format("%s (%d Lines)", getResources().getString(R.string.app_name), mAdapter.getCount()));
-            if (mViewHolder != null) {
+            if (mListView != null) {
                 final int position = mAdapter.getCount() - 1;
-                mViewHolder.listView.post(new Runnable() {
+                mListView.post(new Runnable() {
                     @Override
                     public void run() {
-                        mViewHolder.listView.setSelection(position);
+                        mListView.setSelection(position);
                     }
                 });
             }
@@ -48,7 +47,8 @@ public class ConsoleViewerFragment extends DaggeredFragment {
     @Inject
     ConsoleListAdapter mAdapter;
 
-    private ViewHolder mViewHolder;
+    @InjectView(android.R.id.list)
+    ListView mListView;
 
     @Override
     public void onAttach(Activity activity) {
@@ -83,10 +83,9 @@ public class ConsoleViewerFragment extends DaggeredFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_console_viewer, container, false);
+        ButterKnife.inject(this, view);
 
-        mViewHolder = new ViewHolder();
-        mViewHolder.listView = (ListView) view.findViewById(android.R.id.list);
-        mViewHolder.listView.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
         return view;
     }

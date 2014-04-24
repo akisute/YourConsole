@@ -16,6 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    // Dagger&ButterKnife conflict fix
+    // http://kazy.hatenablog.com/entry/2014/01/12/154350
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
 }
 
 dependencies {
@@ -23,6 +28,7 @@ dependencies {
     compile "com.squareup.dagger:dagger:1.2.+"
     compile "com.squareup.dagger:dagger-compiler:1.2.+"
     compile "com.squareup:otto:1.3.+"
+    compile "com.jakewharton:butterknife:5.0.+"
     compile files('libs/activeandroid.jar')
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
