@@ -1,0 +1,9 @@
+<resources>
+    <color name="font_logcat_wtf">#FFCCCC00</color>
+    <color name="font_logcat_error">#FFFF0000</color>
+    <color name="font_logcat_verbose">#FFCCCCCC</color>
+    <color name="font_logcat_debug">#FF0066FF</color>
+    <color name="font_logcat_info">#FF00CC00</color>
+    <color name="font_logcat_warn">#FFFFFF00</color>
+    <color name="font_text">#FFFFFFFF</color>
+</resources>

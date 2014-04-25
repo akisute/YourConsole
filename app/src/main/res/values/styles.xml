@@ -1,8 +1,12 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo">
-    <!-- Customize your theme here. -->
+
     </style>
 
-    </resources>
+    <style name="AppTheme.ListView.NoDivider" parent="AppTheme">
+        <item name="android:divider">#00000000</item>
+        <item name="android:dividerHeight">0dp</item>
+    </style>
+
+</resources>

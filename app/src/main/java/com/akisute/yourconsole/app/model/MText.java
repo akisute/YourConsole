@@ -54,6 +54,14 @@ public class MText extends Model {
         this.mText = mText;
     }
 
+    public LogcatLine getLogcatLine() {
+        if (Intents.MIME_TYPE_LOGCAT.equals(mMimeType)) {
+            return LogcatLine.newLogLine(mText, true);
+        } else {
+            return null;
+        }
+    }
+
     public static MText newInstance(String senderPackageName, String mimeType, String text) {
         if (senderPackageName == null) {
             return null;
